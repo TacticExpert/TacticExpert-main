@@ -1,4 +1,4 @@
-# <img src='assets/TacticExpert_logo.webp' style="width: 6%"> TacticExpert: Spatial-Temporal Graph Language Model for Basketball Tactics
+# <img src='assets/TacticExpert_logo.webp' style="width: 6%;"> TacticExpert: Spatial-Temporal Graph Language Model for Basketball Tactics
 
 A PyTorch implementation for the paper: 
 
@@ -6,7 +6,7 @@ A PyTorch implementation for the paper:
 >Anonymous Author<br />
 
 <p align="center">
-<iframe src="assets/framework.pdf" width="800px" height="600px"></iframe>
+<img src="assets/framework.jpg" style="width: 40%;"/>
 </p>
 
 In this paper, we propose **TacticExpert**, a spatial-temporal graph language model for basketball tactics. This model explicitly captures delay effects in the spatial space to enhance player node representations across discrete time slices, employing symmetry-invariant priors to guide the attention mechanism. We also introduce an efficient contrastive learning strategy to train a Mixture of Tactics Experts module, facilitating differentiated modeling of offensive tactics. By integrating dense training with sparse inference, we achieve a 2.4x improvement in model efficiency. Moreover, the incorporation of Lightweight Graph Grounding for Large Language Models enables robust performance in open-ended downstream tasks and zero-shot scenarios, including novel teams or players. 
