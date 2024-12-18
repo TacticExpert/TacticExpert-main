@@ -49,16 +49,40 @@ pip install -r requirements.txt
 
 
 
-## Examples to run the codes
-You can run the following command to download the dataset from [Kaggle](https://www.kaggle.com/datasets/deepsportradar/basketball-instants-dataset) and place it in the `./tacticexpert/raw_data` folder:
+## Reproduction pipeline
+### Step 1: Prepare the pre-trained base models and graph data
+TacticExpert is trained based on `GraphGPT`. Please download its weights [here](https://huggingface.co/Jiabin99/GraphGPT-7B-mix-all/tree/main) and place it in the `./src/checkpoints` folder.
+
+Then you can run the following command to download the meta data from [Kaggle](https://www.kaggle.com/datasets/deepsportradar/basketball-instants-dataset) and place it in the `./src/data` folder:
 
 ```bash
-cd ./tacticexpert/raw_data
+cd ./src/data
 kaggle datasets download deepsportradar/basketball-instants-dataset
 unzip ./basketball-instants-dataset.zip -d .
 ```
 
+### Step 2: Multi-modal data augmentation
 
+
+
+
+
+
+
+
+### Step 3: Train mixture of tactics experts and spatial-temporal graph encoder
+
+
+
+
+
+
+### Step 4: Train mixture of tactics experts and text-graph grounding
+
+
+
+
+## Inference
 
 
 
@@ -76,5 +100,5 @@ unzip ./basketball-instants-dataset.zip -d .
 
 
 ## Acknowledgements
-You may refer to the related work that serves as foundations for our framework and code repository, 
-[Vicuna](https://github.com/lm-sys/FastChat). We also partially draw inspirations from [GraphGPT](https://github.com/HKUDS/GraphGPT). The design of our system deployment was inspired by [gradio](https://www.gradio.app) and [Baize](https://huggingface.co/spaces/project-baize/chat-with-baize). Thanks for their wonderful works.
+You may refer to the related works that serves as foundations for TacticExpert, 
+[Vicuna](https://github.com/lm-sys/FastChat) and [GraphGPT](https://github.com/HKUDS/GraphGPT). Thanks for their great works.
