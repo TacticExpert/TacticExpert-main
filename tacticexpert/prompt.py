@@ -62,11 +62,9 @@ Starting from this time slice, will the player with the highest probability of h
 Based on the provided information, <yes> or <no>.
 """
 
-PROMPTS[
-    "tactic_prediction"
-] = """-Role-
-You are an expert basketball possession analyst who specializes in predicting ball possession using player tracking data.
 
--Task-
-Predict which player will have ball possession in the next few time steps based on current and historical player positions and movement patterns.
+PROMPTS[
+    "offensive_tactics_description"
+] = """
+Please provide a detailed description of the offensive tactic based on the given diagram.
 """

@@ -50,17 +50,15 @@ pip install -r requirements.txt
 
 
 ## Examples to run the codes
-### Data
+You can run the following command to download the dataset from [Kaggle](https://www.kaggle.com/datasets/deepsportradar/basketball-instants-dataset) and place it in the `./tacticexpert/raw_data` folder:
+
+```bash
+cd ./tacticexpert/raw_data
+kaggle datasets download deepsportradar/basketball-instants-dataset
+unzip ./basketball-instants-dataset.zip -d .
+```
 
 
-### Train
-
-
-### Inference
-
-
-
-### Evaluate
 
 
 
