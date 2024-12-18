@@ -44,7 +44,25 @@ pip install -r requirements.txt
 
 
 
+
+
+
+
+
 ## Examples to run the codes
+### Data
+
+
+### Train
+
+
+### Inference
+
+
+
+### Evaluate
+
+
 
 
 
@@ -52,11 +70,11 @@ pip install -r requirements.txt
 
 
 ## Main results
-| Supervised Downstream Tasks | Evaluation | TacticExpert | -MoE          | -Delay | -Group  | -PE    | -Lap          | -CLIP  | 
-| --------------------------- | ---------- | ------------ | ------------- | ------ | ------  | ------ | ------------- | ------ |
-| Node Classification         | Macro-F1   | **0.8333**   | 0.7303        | 0.6379 | 0.6667  | 0.7588 | <u>0.7903</u> | 0.5304 |
-| Link Prediction             | AUC        | **0.7264**   | <u>0.6788</u> | 0.5758 | 0.5408  | 0.6677 | 0.5301        | 0.6650 |
-| Graph Classification        | Macro-F1   | **0.6750**   | 0.4760        | 0.5214 | 0.5786  | 0.6208 | <u>0.6400</u> | 0.5363 |
+| Supervised Downstream Tasks | Evaluation | TacticExpert | -MoE          | -Delay | -Group | -PE    | -Lap          | -CLIP  | 
+| --------------------------- | ---------- | ------------ | ------------- | ------ | ------ | ------ | ------------- | ------ |
+| Node Classification         | Macro-F1   | **0.8333**   | 0.7303        | 0.6379 | 0.6667 | 0.7588 | <u>0.7903</u> | 0.5304 |
+| Link Prediction             | AUC        | **0.7264**   | <u>0.6788</u> | 0.5758 | 0.5408 | 0.6677 | 0.5301        | 0.6650 |
+| Graph Classification        | Macro-F1   | **0.6750**   | 0.4760        | 0.5214 | 0.5786 | 0.6208 | <u>0.6400</u> | 0.5363 |
 
 
 ## Acknowledgements
