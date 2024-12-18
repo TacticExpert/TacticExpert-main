@@ -50,7 +50,7 @@ pip install -r requirements.txt
 
 
 ## Reproduction pipeline
-### Step 1: Prepare the pre-trained base models and graph data
+### Step 1: Prepare the pre-trained base model and meta data
 TacticExpert is trained based on `GraphGPT`. Please download its weights [here](https://huggingface.co/Jiabin99/GraphGPT-7B-mix-all/tree/main) and place it in the `./src/checkpoints` folder.
 
 Then you can run the following command to download the meta data from [Kaggle](https://www.kaggle.com/datasets/deepsportradar/basketball-instants-dataset) and place it in the `./src/data` folder:
