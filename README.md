@@ -49,7 +49,7 @@ pip install -r requirements.txt
 
 
 
-## Reproduction pipeline
+## Reproduct training pipeline
 ### Step 1: Prepare the pre-trained base model and meta data
 TacticExpert is trained based on `GraphGPT`. Please download its weights [here](https://huggingface.co/Jiabin99/GraphGPT-7B-mix-all/tree/main) and place it in the `./src/checkpoints` folder.
 
@@ -61,7 +61,15 @@ kaggle datasets download deepsportradar/basketball-instants-dataset
 unzip ./basketball-instants-dataset.zip -d .
 ```
 
-### Step 2: Multi-modal data augmentation
+
+#### (The following steps can be replaced by running `python main.py` to train the model directly)
+### Step 2: Preprocess graph data and perform multi-modal data augmentation
+
+
+
+
+
+
 
 
 
@@ -82,7 +90,10 @@ unzip ./basketball-instants-dataset.zip -d .
 
 
 
+
+
 ## Inference
+
 
 
 
