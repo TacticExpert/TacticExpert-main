@@ -58,7 +58,11 @@ pip install -r requirements.txt
 | Link Prediction             | AUC        | **0.7264**   | <u>0.6788</u> | 0.5758 | 0.5408 | 0.6677 | 0.5301        | 0.6650 |
 | Graph Classification        | Macro-F1   | **0.6750**   | 0.4760        | 0.5214 | 0.5786 | 0.6208 | <u>0.6400</u> | 0.5363 |
 
-
+| Supervised Downstream Tasks | Evaluation | TacticExpert | -MoE          | -Delay | -Group | -PE    | -Lap          | -CLIP  | 
+| --------------------------- | ---------- | ------------ | ------------- | ------ | ------ | ------ | ------------- | ------ |
+| Node Classification         | Macro-F1   | <span style="white-space: nowrap;">**0.8333**</span> | <span style="white-space: nowrap;">0.7303</span> | <span style="white-space: nowrap;">0.6379</span> | <span style="white-space: nowrap;">0.6667</span> | <span style="white-space: nowrap;">0.7588</span> | <span style="white-space: nowrap;"><u>0.7903</u></span> | <span style="white-space: nowrap;">0.5304</span> |
+| Link Prediction             | AUC        | <span style="white-space: nowrap;">**0.7264**</span> | <span style="white-space: nowrap;"><u>0.6788</u></span> | <span style="white-space: nowrap;">0.5758</span> | <span style="white-space: nowrap;">0.5408</span> | <span style="white-space: nowrap;">0.6677</span> | <span style="white-space: nowrap;">0.5301</span> | <span style="white-space: nowrap;">0.6650</span> |
+| Graph Classification        | Macro-F1   | <span style="white-space: nowrap;">**0.6750**</span> | <span style="white-space: nowrap;">0.4760</span> | <span style="white-space: nowrap;">0.5214</span> | <span style="white-space: nowrap;">0.5786</span> | <span style="white-space: nowrap;">0.6208</span> | <span style="white-space: nowrap;"><u>0.6400</u></span> | <span style="white-space: nowrap;">0.5363</span> |
 
 
 ## Acknowledgements
