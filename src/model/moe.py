@@ -183,10 +183,8 @@ def train_moe(model, optimizer, batch_data, batch_labels, similarity_matrix, alp
     ).squeeze(1)
     main_loss = info_nce_loss(selected_outputs.unsqueeze(1), batch_labels)
     
-    # 路由平衡损失
     routing_loss = compute_routing_balance_loss(routing_weights)
     
-    # 总损失
     total_loss = main_loss + alpha * contra_loss + 0.1 * routing_loss
     
     total_loss.backward()

@@ -11,7 +11,6 @@ class STEncoder(nn.Module):
     def __init__(self, hidden_dim=256, num_players=10, dropout=0.1):
         super().__init__()
         
-        # 特征投影
         self.feature_proj = nn.Sequential(
             nn.Linear(15, hidden_dim),
             nn.LayerNorm(hidden_dim),
@@ -150,28 +149,22 @@ class LaplacianPE(nn.Module):
         batch_size = adj.size(0)
         device = adj.device
         
-        # Compute degree matrix
         degree = torch.sum(adj, dim=-1)  # [batch_size, num_nodes]
         degree_inv_sqrt = torch.pow(degree + 1e-8, -0.5)
         degree_inv_sqrt = torch.diag_embed(degree_inv_sqrt)
         
-        # Compute normalized Laplacian: L = I - D^(-1/2)AD^(-1/2)
         identity = torch.eye(self.num_nodes, device=device).unsqueeze(0).expand(batch_size, -1, -1)
         normalized_adj = torch.matmul(torch.matmul(degree_inv_sqrt, adj), degree_inv_sqrt)
         laplacian = identity - normalized_adj
         
-        # Eigendecomposition
         eigenvals, eigenvecs = torch.linalg.eigh(laplacian)
         
-        # Sort eigenvalues and eigenvectors
         sorted_indices = torch.argsort(eigenvals, dim=-1)
         eigenvals = torch.gather(eigenvals, -1, sorted_indices)
         eigenvecs = torch.gather(eigenvecs, -1, sorted_indices.unsqueeze(-2).expand(-1, self.num_nodes, -1))
         
-        # Select k smallest non-zero eigenvalues/vectors (skip first zero eigenvalue)
         selected_eigenvecs = eigenvecs[:, :, 1:self.k+1]  # [batch_size, num_nodes, k]
         
-        # Generate positional encoding
         pos_enc = torch.matmul(selected_eigenvecs, self.weight)  # [batch_size, num_nodes, hidden_dim]
         
         return pos_enc
