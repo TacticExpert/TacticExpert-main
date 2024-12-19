@@ -1,4 +1,4 @@
-# <img src='assets/TacticExpert_logo.webp' style="width: 6%;"> TacticExpert: Spatial-Temporal Graph Language Model for Basketball Tactics
+# <img src='assets/logo.webp' style="width: 6%;"> TacticExpert: Spatial-Temporal Graph Language Model for Basketball Tactics
 
 A PyTorch implementation for the paper: 
 
@@ -40,14 +40,24 @@ pip install -r requirements.txt
 ```
 
 ## Code structure
-
-
-
-
-
-
-
-
+```
+TacticExpert/
+├── src/
+│   ├── main.py               # two-stage training pipeline
+│   ├── params.py             # parameters
+│   ├── data/
+│   │   ├── data_loader.py    # data loader
+│   │   └── basketball-instants-dataset/  # original data
+│   ├── model/
+│   │   ├── moe.py           # Mixture of Experts
+│   │   ├── st_encoder.py    # spatial-temporal graph encoder
+│   │   ├── st_graph_transformer.py  # graph transformer module
+│   │   └── text_graph_grounding.py  # text-graph contrastive learning module
+│   └── utils/
+│       └── TimeLogger.py     
+├── assets/                  
+└── requirements.txt          # env
+```
 
 ## Reproduct training pipeline
 ### Step 1: Prepare the pre-trained base model and meta data
@@ -61,46 +71,31 @@ kaggle datasets download deepsportradar/basketball-instants-dataset
 unzip ./basketball-instants-dataset.zip -d .
 ```
 
-
-#### (The following steps can be replaced by running `python main.py` to train the model directly)
 ### Step 2: Preprocess graph data and perform multi-modal data augmentation
-
-
-
-
-
-
-
-
-
-
-
-
-
+```python
+from data.data_loader import BasketballDataset
+dataset = BasketballDataset(data_dir="./src/data/basketball-instants-dataset")
+multi_modal_data_augmentation(dataset)
+```
 
 ### Step 3: Train mixture of tactics experts and spatial-temporal graph encoder
 
-
-
-
-
+```python
+python main.py --stage 1 \
+    --num_experts 5 \
+    --hidden_dim 256 \
+    --lr 2e-4 \
+    --epochs 100
+```
 
 ### Step 4: Train mixture of tactics experts and text-graph grounding
 
-
-
-
-
-
-## Inference
-
-
-
-
-
-
-
-
+```python
+python main.py --stage 2 \
+    --load_model "path/to/checkpoint.pt" \ # path to the checkpoint of stage 1
+    --lr 1e-4 \
+    --epochs 50
+```
 
 ## Main results
 | Supervised Downstream Tasks | Evaluation | TacticExpert | -MoE          | -Delay | -Group | -PE    | -Lap          | -CLIP  | 
