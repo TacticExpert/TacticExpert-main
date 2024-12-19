@@ -173,7 +173,7 @@ def main():
     raw_image_dir = "./src/data/basketball-instants-dataset/images"
     official_data_dir = "./src/data/official_data"
     official_image_dir = "./src/data/official_data/images"
-    save_dir = "./src/data/processed_data"
+    save_dir = "./src/data"
     
     result = generator.generate_descriptions(
         raw_data_dir=raw_data_dir,
@@ -182,6 +182,9 @@ def main():
         official_image_dir=official_image_dir,
         save_dir=save_dir
     )
+    
+    np.save(os.path.join(save_dir, "offensive_tactics_embeddings.npy"), np.array(result["embeddings"]))
+    np.save(os.path.join(save_dir, "offensive_tactics_similarity.npy"), np.array(result["similarity_matrix"]))
     
     return result
 
