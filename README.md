@@ -28,9 +28,6 @@ conda activate tacticexpert
 # Torch with CUDA 11.7
 pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --extra-index-url https://download.pytorch.org/whl/cu117
 
-# Install vicuna base model
-pip3 install "fschat[model_worker,webui]"
-
 # Install pyg and pyg-relevant packages
 pip install torch_geometric
 pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.1+cu117.html
