@@ -56,7 +56,7 @@ TacticExpert/
 │   └── utils/
 │       └── TimeLogger.py     
 ├── assets/                  
-└── requirements.txt          # env
+└── requirements.txt                       # env
 ```
 
 ## Reproduct training pipeline
