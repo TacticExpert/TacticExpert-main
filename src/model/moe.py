@@ -8,8 +8,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, TensorDataset
 from utils.TimeLogger import log
+from model.st_encoder import STEncoder
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0, 1, 2, 3, 4"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0, 1, 2, 3"
 
 class MoERouter(nn.Module):
     def __init__(self, input_dim=768, hidden_dim=384, num_experts=5, temperature=0.07, dropout=0.1):
@@ -63,28 +64,52 @@ class ExpertModule(nn.Module):
 class TacticExpert(nn.Module):
     def __init__(self, input_dim=768, hidden_dim=384, output_dim=256, num_experts=5):
         super(TacticExpert, self).__init__()
-        self.router = MoERouter(input_dim, hidden_dim, num_experts)
-        self.experts = nn.ModuleList([
-            ExpertModule(input_dim, hidden_dim, output_dim) for _ in range(num_experts)
-        ])
-        self.num_experts = num_experts
         
-    def forward(self, x, return_all_experts=False):
-        batch_size = x.shape[0]
-        routing_weights, expert_index = self.router(x)
+        self.router = MoERouter(
+            input_dim=15 * 10,
+            hidden_dim=hidden_dim,
+            num_experts=num_experts
+        )
+        
+        self.experts = nn.ModuleList([
+            STEncoder(
+                hidden_dim=hidden_dim,
+                num_players=10
+            ) for _ in range(num_experts)
+        ])
+        
+        self.output_proj = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.LayerNorm(hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(hidden_dim // 2, output_dim)
+        )
+        
+    def forward(self, batch_data, return_all_experts=False):
+        routing_features = batch_data.x[:, :, 0, :].reshape(batch_data.x.size(0), -1)
+        routing_weights, expert_index = self.router(routing_features)
         
         if return_all_experts:
             all_expert_outputs = []
-            for i in range(self.num_experts):
-                expert_output = self.experts[i](x)
+            for expert in self.experts:
+                expert_output = expert(batch_data)  # [batch, time, players, hidden]
+                expert_output = expert_output.mean(dim=[1,2])  # [batch, hidden]
+                expert_output = self.output_proj(expert_output)  # [batch, output]
                 all_expert_outputs.append(expert_output)
-            return torch.stack(all_expert_outputs, dim=1), routing_weights, expert_index
-        
-        outputs = torch.zeros((batch_size, self.experts[0].expert[-1].normalized_shape[0])).to(x.device)
-        for i in range(batch_size):
-            selected_expert = expert_index[i]
-            outputs[i] = self.experts[selected_expert](x[i])
-        
+            outputs = torch.stack(all_expert_outputs, dim=1)  # [batch, num_experts, output]
+        else:
+            outputs = torch.zeros(
+                batch_data.x.size(0), 
+                self.output_proj[-1].out_features
+            ).to(batch_data.x.device)
+            
+            for i in range(batch_data.x.size(0)):
+                expert_idx = expert_index[i]
+                expert_output = self.experts[expert_idx](batch_data[i:i+1])
+                expert_output = expert_output.mean(dim=[1,2])
+                outputs[i] = self.output_proj(expert_output.squeeze(0))
+                
         return outputs, routing_weights, expert_index
 
 def info_nce_loss(expert_outputs, similarity_matrix, k_negatives=50, temperature=0.07):
@@ -147,15 +172,21 @@ def train_moe(model, optimizer, batch_data, batch_labels, similarity_matrix, alp
     model.train()
     optimizer.zero_grad()
     
-    batch_data = batch_data.cuda()
-    batch_labels = batch_labels.cuda()
-    
     expert_outputs, routing_weights, expert_index = model(batch_data, return_all_experts=True)
     
     contra_loss = info_nce_loss(expert_outputs, similarity_matrix)
-    main_loss = info_nce_loss(expert_outputs, batch_labels)
+    
+    selected_outputs = torch.gather(
+        expert_outputs, 
+        1, 
+        expert_index.unsqueeze(-1).unsqueeze(-1).expand(-1, 1, expert_outputs.size(-1))
+    ).squeeze(1)
+    main_loss = info_nce_loss(selected_outputs.unsqueeze(1), batch_labels)
+    
+    # 路由平衡损失
     routing_loss = compute_routing_balance_loss(routing_weights)
     
+    # 总损失
     total_loss = main_loss + alpha * contra_loss + 0.1 * routing_loss
     
     total_loss.backward()
@@ -261,7 +292,6 @@ def train_model(model, train_loader, val_loader, train_similarity, val_similarit
         log(f"- train_loss: {avg_train_loss:.4f}")
         log(f"- val_loss: {avg_val_loss:.4f}")
         
-        # 保存最佳模型
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             torch.save({
