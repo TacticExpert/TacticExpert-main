@@ -43,16 +43,16 @@ pip install -r requirements.txt
 ```
 TacticExpert/
 ├── src/
-│   ├── main.py               # two-stage training pipeline
-│   ├── params.py             # parameters
+│   ├── main.py                            # two-stage training pipeline
+│   ├── params.py                          # parameters
 │   ├── data/
-│   │   ├── data_loader.py    # data loader
-│   │   └── basketball-instants-dataset/  # original data
+│   │   ├── data_loader.py                 # data loader
+│   │   └── basketball-instants-dataset/   # original data
 │   ├── model/
-│   │   ├── moe.py           # Mixture of Experts
-│   │   ├── st_encoder.py    # spatial-temporal graph encoder
-│   │   ├── st_graph_transformer.py  # graph transformer module
-│   │   └── text_graph_grounding.py  # text-graph contrastive learning module
+│   │   ├── moe.py                         # Mixture of Experts
+│   │   ├── st_encoder.py                  # spatial-temporal graph encoder
+│   │   ├── st_graph_transformer.py        # graph transformer module
+│   │   └── text_graph_grounding.py        # text-graph contrastive learning module
 │   └── utils/
 │       └── TimeLogger.py     
 ├── assets/                  
