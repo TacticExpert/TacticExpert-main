@@ -75,7 +75,7 @@ dataset = BasketballDataset(data_dir="./src/data/basketball-instants-dataset")
 multi_modal_data_augmentation(dataset)
 ```
 
-### Step 3: Train mixture of tactics experts and spatial-temporal graph encoder
+### Step 3: Train mixture of tactic experts and spatial-temporal graph encoder
 
 ```python
 python main.py --stage 1 \
@@ -85,7 +85,7 @@ python main.py --stage 1 \
     --epochs 100
 ```
 
-### Step 4: Train mixture of tactics experts and text-graph grounding
+### Step 4: Train mixture of tactic experts and text-graph grounding
 
 ```python
 python main.py --stage 2 \
